@@ -1,2 +1,1 @@
-# QUIZ
- My Quiz Application
+### Boilerplate app structure for Quiz App project
