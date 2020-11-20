@@ -7,8 +7,40 @@
   *
 */
 
-.mainPage {
+.mainPage, .correctPage, .incorrectPage, .finalPage {
   margin: 40px;
-  border-color: blue;
+  border: 3px solid blue;
+  border-radius: 10px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #95BF3B;
+  background-color: #01000D;
+  border: 3px solid #02733E;
 }
+  
+
+
+h1 {
+  text-align: center;
+  border-radius: 10px;
+  font-family: monospace;
+  background-color: #01000D;
+  color: #95BF3B;
+  border: 3px solid #02733E;
+  border-radius: 10px;
+}
+
+body {
+  margin-right: auto;
+  margin-left:  auto; 
+
+  max-width: 960px;
+
+  padding-right: 10px; 
+  padding-left:  10px; 
+  background-color: grey;
+}
+

@@ -98,7 +98,7 @@ function generateQuestionPage() {
   <form id='question'>
     <h2>${question.question}</h2>
     ${answers.join(' ')}
-    <button class='submit'>Submit Answer.</button>
+    <button class='submit'>Submit Answer</button>
     </form>
   </div>`;
 }
