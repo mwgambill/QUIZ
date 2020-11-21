@@ -2,12 +2,8 @@
 /* eslint-disable indent */
 'use strict';
 
-/**
- * Example store structure
- */
 const store = {
-  // 5 or more questions are required
-  questions: [
+   questions: [
     {
       question: 'Which of the following actors played these roles: Elrond - "Lord of the rings", Agent Smith - "The Matrix", and Red Skull - "Captain America"?',
       answers: [
@@ -65,24 +61,8 @@ const store = {
   incorrect: 0
 };
 
-/**
- * 
- * Technical requirements:
- * 
- * Your app should include a render() function, that regenerates the view each time the store is updated. 
- * See your course material and access support for more details.
- *
- * NO additional HTML elements should be added to the index.html file.
- *
- * You may add attributes (classes, ids, etc) to the existing HTML elements, or link stylesheets or additional scripts if necessary
- *
- * SEE BELOW FOR THE CATEGORIES OF THE TYPES OF FUNCTIONS YOU WILL BE CREATING 👇
- * 
- */
 
-/********** TEMPLATE GENERATION FUNCTIONS **********/
-
-// These functions return HTML templates
+/* TEMPLATE GENERATION FUNCTIONS */
 
 function generateQuestionPage() {
 
@@ -103,7 +83,7 @@ function generateQuestionPage() {
   </div>`;
 }
 
-function generateMainPage() {
+function generateStartPage() {
    return `<div class='mainPage'>
   <h2>Here we go!</h2>
   <h3>Try your best and have fun!</h3>
@@ -134,7 +114,7 @@ function generateIncorrectPage() {
   `;
 }
 
-function generateEndOfGamePage() {
+function generateEndPage() {
   return `
   <div class='finalPage'>
   <h2>All done! Let see how you did!</h2>
@@ -146,84 +126,82 @@ function generateEndOfGamePage() {
 
 /********** RENDER FUNCTION(S) **********/
 
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-
-function render() {
+function render(quizPage) {
   let html = '';
-  if (store.quizStarted === false) {
-    if(store.questionNumber === store.questions.length) {
-      html = generateEndOfGamePage();
-    } else {
-      html = generateMainPage();
-    }
-  } else if (store.questionNumber === store.questions.length){
-    html = generateEndOfGamePage();
-  } else {
-    html= generateQuestionPage();
+  switch (quizPage) {
+    case 'startPage':
+      html = generateStartPage();
+      break;
+    case 'correctPage':
+      html = generateCorrectPage();
+      break;
+    case 'incorrectPage':
+      html = generateIncorrectPage();
+      break;
+    case 'finalPage':
+      html = generateEndPage();
+      break;
+    default:
+        html = generateQuestionPage();
   }
   $('main').html(html);
 }
 
 
-/********** EVENT HANDLER FUNCTIONS **********/
+/* EVENT HANDLER FUNCTIONS */
 
-// These functions handle events (submit, click, etc)
 
 function handleStartQuiz() {
   $('main').on('click', '#startQuiz', function() {
     store.quizStarted = true;
     render();
-    console.log(`handleStartQuiz 'ran'`);
   });
 }
 
 function handleAnswerSubmit() {
   $('main').on('submit', '#question', function(event){
     event.preventDefault();
-    let chosenAnswer = $("input[name='answer']:checked").val();
+    let chosenAnswer = $('input[name=\'answer\']:checked').val();
     let correctAnswer = store.questions[store.questionNumber].correctAnswer;
     //compare against correct answer
     if (chosenAnswer === correctAnswer) {
       store.score++;
-      $('main').html(generateCorrectPage());
-      
+      render('correctPage');
     } else {
       store.incorrect++;
-      $('main').html(generateIncorrectPage());
+      render('incorrectPage');
     }
   });
-  
 }
 
 function handleResetSubmit() {
-  console.log(`handleResetSubmit 'ran'`);
   $('main').on('click', '#startOver', function(){
     store.quizStarted = false;
     store.score =0;
     store.questionNumber=0;
     store.incorrect=0;
-    render();
+    render('startPage');
    });
 }
 
 function handleNextQuestion() {
-  $('main').on('click', '#nextQuestion', function(){
+  $('main').on('click', '#nextQuestion', function (event) {
     store.questionNumber++;
-    render();
+    if (store.questionNumber === store.questions.length) {
+      render('finalPage');
+      } else {
+        render();
+      }
   });
 }
 
-// ************* main function ****************//
+
+// * main function *//
 
 function main() {
-  render();
+  render('startPage');
   handleStartQuiz();
   handleAnswerSubmit();
-  generateQuestionPage();
-  generateMainPage();
-  generateCorrectPage();
-  generateIncorrectPage();
-  generateEndOfGamePage();
   handleResetSubmit();
   handleNextQuestion();
 }
